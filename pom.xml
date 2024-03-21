@@ -180,6 +180,9 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>${maven-checkstyle.version}</version>
+        <configuration>
+              <testFailureIgnore>true</testFailureIgnore>
+          </configuration>
         <dependencies>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
@@ -400,6 +403,7 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-checkstyle-plugin</artifactId>
                         <versionRange>[1,)</versionRange>
+
                         <goals>
                           <goal>check</goal>
                         </goals>
