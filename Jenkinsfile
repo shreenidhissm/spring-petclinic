@@ -25,5 +25,10 @@ pipeline {
                 }
             }
         }
+        stage('Docker build and publish'){
+            steps{
+                sh "docker build -t petclinc ."
+            }
+        }
     }
 }
