@@ -8,17 +8,21 @@ pipeline {
                 script {
                     sh "mvn clean compile"
                 }
+            }
+        }
+        stage('test'){
             steps{
                 script{
                     sh "mvn test"
                 }
             }
+        }
+
+        stage('package'){
             steps{
                 script{
                     sh "mvn package"
                 }
-            }
-
             }
         }
     }
