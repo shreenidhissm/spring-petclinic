@@ -36,6 +36,22 @@ pipeline {
                 }
             }
         }
+
+        stage('Push artifacts into artifactory'){
+            steps {
+                rtUpload (
+                    serverId: 'petclinic-artifactory',
+                    spec: '''{
+                          "files": [
+                            {
+                                "pattern": "*.jar",
+                                "target":  "petclinc-repo-local/build-files/"
+                            }
+                        ]
+                    }'''
+                )
+            }
+        }
         stage('Docker build and publish'){
             steps{
                 script{
