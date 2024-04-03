@@ -51,7 +51,8 @@ pipeline {
             steps {
               script {
                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
-                             sh "docker build -t avinashbasoorbs/pet1:latest ."
+                             sh "docker build -t image1 ."
+                             sh "docker tag image1 avinashbasoorbs/pet-clinic123:latest"
                    
                     }
               }
@@ -62,7 +63,7 @@ pipeline {
             steps {
               script {
                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
-                             sh "docker push avinashbasoorbs/pet1:latest"
+                             sh "docker push avinashbasoorbs/pet-clinic123:latest"
                    
                     }
               }
