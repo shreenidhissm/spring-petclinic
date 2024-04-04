@@ -41,6 +41,28 @@ pipeline {
                     
             }
         }
+        stage('Docker build') {
+            steps {
+              script {
+                   withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                             sh "docker build -t image1 ."
+                             sh "docker tag image1 shreenidhism/pet-clinic123:latest"
+                   
+                    }
+              }
+            }
+        }
+        
+        stage('Docker publish') {
+            steps {
+              script {
+                   withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                             sh "docker push shreenidhism/pet-clinic123:latest"
+                   
+                    }
+              }
+            }
+        }
     }
  }
   
