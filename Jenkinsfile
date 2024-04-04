@@ -4,6 +4,9 @@ pipeline {
         jdk 'jdk11'
         maven 'maven-3'
     }
+        envirnoment{
+        SCANNER_HOME= tool 'sonar-scanner-petclinc'
+    }
     stages {
         stage('complie') {
             steps {
@@ -18,6 +21,15 @@ pipeline {
         stage('package') {
             steps {
                 sh 'mvn package'
+            }
+        }
+        stage('Sonarquebe analysis') {
+            steps {
+                withSonarQubeEnv('sonar') {
+                    sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Petclinic \
+                    -Dsonar.java.binaries=. \
+                    -Dsonar.projectKey=Petclinic '''
+                }
             }
         }
     }
