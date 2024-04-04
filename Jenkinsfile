@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Sonarquebe analysis') {
             steps {
-                withSonarQubeEnv('sonar-scanner') {
+                withSonarQubeEnv('sonarserver') {
                     sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Petclinic \
                     -Dsonar.java.binaries=. \
                     -Dsonar.projectKey=Petclinic '''
@@ -35,7 +35,7 @@ pipeline {
         stage('Qulity gate') {
             steps {
                 script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar'
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
                 }
                     
             }
