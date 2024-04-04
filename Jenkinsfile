@@ -1,71 +1,24 @@
 pipeline {
-    agent {
-        docker { image 'maven:3.6.3-openjdk-17' }
+    agent any
+    tools {
+        jdk 'jdk11'
+        maven 'maven-3'
     }
-    
-    envirnoment{
-        SCANNER_HOME= tool 'sonar-scanner-petclinc'
-    }
-    stages{
-        stage('Compile'){
-            steps{
-               sh "mvn clean compile"
-            }
-        }
-        stage('Sonarqube Analysis'){
+        stage('complie') {
             steps {
-                withSonarQubeEnv('sonarqube') {
-                    sh ''' $SCANNER_HOME/bin/sonar-scanner-petclinc -Dsonar.projectName=Petclinc \
-                    -Dsonar.java.binaries=. \
-                    -Dsonar.projectKey=Petclinc '''
-                }
+                sh 'mvn compile'
             }
         }
-        stage('test'){
-            steps{
-                script{
-                    sh "mvn test"
-                }
-            }
-        }
-
-        stage('package'){
-            steps{
-                script{
-                    sh "mvn package"
-                }
-            }
-        }
-
-        stage('Push artifacts into artifactory'){
+        stage('test') {
             steps {
-                rtUpload (
-                    serverId: 'petclinic-artifactory',
-                    spec: '''{
-                          "files": [
-                            {
-                                "pattern": "*.jar",
-                                "target":  "petclinc-repo-local/build-files/"
-                            }
-                        ]
-                    }'''
-                )
+                sh 'mvn test'
             }
         }
-        stage('Docker build and publish'){
-            steps{
-                script{
-                    withDockerRegistry(credentialsId: 'docker_cred', url: 'https://hub.docker.com/repository/docker/avinashbasoorbs')
-                        sh "docker build -t petclinc ."
-                        sh "docker tag avinashbasoorbs/petclinic:latest"
-                        sh "docker push avinashbasoorbs/petclinic:latest"
-                }
-            }
-        }
-        stage('Trivy image scanner'){
-            steps{
-               sh "trivy image avinashbasoorbs/petclinic:latest"
+        stage('package') {
+            steps {
+                sh 'mvn package'
             }
         }
     }
-}
+ }
+  
