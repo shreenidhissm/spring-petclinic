@@ -27,7 +27,6 @@ pipeline {
             steps {
                 withSonarQubeEnv('sonarserver') {
                     sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Petclinic \
-                    -Dsonar.host.url=http://13.233.236.189:9000/ \
                     -Dsonar.java.binaries=. \
                     -Dsonar.projectKey=Petclinic '''
                 }
